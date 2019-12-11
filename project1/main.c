@@ -8,7 +8,7 @@ int matrix_x, matrix_y, police_station, policemen[10];
 int matrix[20][20];
 
 void rand_movement(int *x, int *y);
-void targeted_movement(int *police_x, int *police_y, int robber_x, int robber_y);
+void targeted_movement(int *police_x, int *police_y, int dst_x, int dst_y);
 
 void display_matrix();
 
