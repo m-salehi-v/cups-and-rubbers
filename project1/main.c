@@ -4,9 +4,12 @@
 #include <unistd.h>
 
 
-int matrix_x, matrix_y, police_station, policemen[10], robber_x, robber_y;
+int matrix_x, matrix_y, police_station, policemen[10];
 int matrix[20][20];
+
 void rand_movement(int *x, int *y);
+void targeted_movement(int *police_x, int *police_y, int robber_x, int robber_y);
+
 void display_matrix();
 
 int main() {
@@ -50,35 +53,36 @@ int main() {
 
     }
     display_matrix();
-    /*
-    just checking the rand_movement func
+
+
+
+    /* just checking ran_movement
     while (1) {
         for (int i = 0; i < matrix_x; ++i) {
             for (int j = 0; j < matrix_y; ++j) {
                 if (matrix[i][j] != 0) {
                     rand_movement(&i, &j);
-                    display_matrix();
-                    printf("\n\n");
-                    sleep(1);
-                    system("cls");
-
                 }
-
             }
         }
+        display_matrix();
+        sleep(1);
+        system("cls");
     }
-    */
+     */
+
+
     return 0;
 }
 
 void rand_movement(int *x, int *y) {
     int tmp = matrix[*x][*y], k;
     matrix[*x][*y] = 0;
-    while (1){
+    while (1) {
         k = (rand() % 3) - 1;
         *x += k;
         *y += k;
-        if((*x >= 0) && (*x < matrix_x) && (*y >= 0) && (*y < matrix_y) && (matrix[*x][*y] == 0)){
+        if ((*x >= 0) && (*x < matrix_x) && (*y >= 0) && (*y < matrix_y) && (matrix[*x][*y] == 0)) {
             matrix[*x][*y] = tmp;
             break;
         }
@@ -88,6 +92,7 @@ void rand_movement(int *x, int *y) {
 
 
 }
+
 void display_matrix() {
     for (int i = 0; i < matrix_x; i++) {
         for (int j = 0; j < matrix_y; ++j) {
@@ -100,4 +105,18 @@ void display_matrix() {
         }
         printf("\n");
     }
+}
+
+void targeted_movement(int *police_x, int *police_y, int dst_x, int dst_y){
+    if (*police_x - dst_x == 2 || dst_x - *police_x == 2)
+        *police_x = (*police_x + dst_x) / 2;
+    else if (*police_x - dst_x == 1 || dst_x - *police_x == 1)
+        *police_x = dst_x;
+    else;
+
+    if (*police_y - dst_y == 2 || dst_y - *police_y == 2)
+        *police_y = (*police_y + dst_y) / 2;
+    else if (*police_y - dst_y == 1 || dst_y - *police_y == 1)
+        *police_y = dst_y;
+    else;
 }
