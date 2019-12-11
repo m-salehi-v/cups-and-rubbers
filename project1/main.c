@@ -8,6 +8,7 @@ int matrix_x, matrix_y, police_station, policemen[10];
 int matrix[20][20];
 
 void rand_movement(int *x, int *y);
+
 void targeted_movement(int *police_x, int *police_y, int dst_x, int dst_y);
 
 void display_matrix();
@@ -107,15 +108,23 @@ void display_matrix() {
     }
 }
 
-void targeted_movement(int *police_x, int *police_y, int dst_x, int dst_y){
-    if (*police_x - dst_x == 2 || dst_x - *police_x == 2)
-        *police_x = (*police_x + dst_x) / 2;
+void targeted_movement(int *police_x, int *police_y, int dst_x, int dst_y) {
+    if (*police_x - dst_x >= 2 || dst_x - *police_x >= 2) {
+        if (*police_x > dst_x)
+            (*police_x)--;
+        else
+            (*police_x)++;
+    }
     else if (*police_x - dst_x == 1 || dst_x - *police_x == 1)
         *police_x = dst_x;
     else;
 
-    if (*police_y - dst_y == 2 || dst_y - *police_y == 2)
-        *police_y = (*police_y + dst_y) / 2;
+    if (*police_y - dst_y >= 2 || dst_y - *police_y >= 2){
+        if (*police_y > dst_y)
+            (*police_y)--;
+        else
+            (*police_y)++;
+    }
     else if (*police_y - dst_y == 1 || dst_y - *police_y == 1)
         *police_y = dst_y;
     else;
