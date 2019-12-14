@@ -5,7 +5,7 @@
 
 
 int matrix_x, matrix_y, police_station, policemen[10];
-int matrix[20][20];
+int matrix[50][50];
 
 void rand_movement(int *x, int *y);
 
@@ -56,11 +56,11 @@ int main() {
 
     }
     display_matrix();
+    printf("\n\n");
 
 
 
-
-    /*just checking targeted_movement
+    //just checking targeted_movement
     int k = 1;
     while (k < 200) {
         for (int i = 0; i < matrix_x; ++i) {
@@ -77,7 +77,7 @@ int main() {
 
     k++;
     }
-*/
+
 
 
     return 0;
@@ -118,64 +118,60 @@ void display_matrix() {
 void targeted_movement(int *police_x, int *police_y, int dst_x, int dst_y) {
     int tmp = matrix[*police_x][*police_y];
     matrix[*police_x][*police_y] = 0;
-    if (*police_x > dst_x && *police_y > dst_y){ //4
-        if(matrix[*police_x - 1][*police_y - 1] == 0){
+    if (*police_x > dst_x && *police_y > dst_y) { //4
+        if (matrix[*police_x - 1][*police_y - 1] <= 0) {
             (*police_x)--;
             (*police_y)--;
-        }
-        else if(matrix[*police_x][*police_y - 1] == 0)
+        } else if (matrix[*police_x][*police_y - 1] <= 0)
             (*police_y)--;
-        else if(matrix[*police_x - 1][*police_y] == 0)
+        else if (matrix[*police_x - 1][*police_y] <= 0)
             (*police_x)--;
         else;
-    }
-    else if (*police_x < dst_x && *police_y > dst_y){ //1
-        if(matrix[*police_x + 1][*police_y - 1] == 0){
+    } else if (*police_x < dst_x && *police_y > dst_y) { //1
+        if (matrix[*police_x + 1][*police_y - 1] <= 0) {
             (*police_x)++;
             (*police_y)--;
-        }
-        else if(matrix[*police_x + 1][*police_y] == 0)
+        } else if (matrix[*police_x + 1][*police_y] <= 0)
             (*police_x)++;
-        else if(matrix[*police_x][*police_y - 1] == 0)
+        else if (matrix[*police_x][*police_y - 1] <= 0)
             (*police_y)--;
         else;
-    }
-    else if (*police_x < dst_x && *police_y < dst_y){ //2
-        if(matrix[*police_x + 1][*police_y + 1] == 0){
+    } else if (*police_x < dst_x && *police_y < dst_y) { //2
+        if (matrix[*police_x + 1][*police_y + 1] <= 0) {
             (*police_x)++;
             (*police_y)++;
-        }
-        else if(matrix[*police_x][*police_y + 1] == 0)
+        } else if (matrix[*police_x][*police_y + 1] <= 0)
             (*police_y)++;
-        else if(matrix[*police_x + 1][*police_y] == 0)
+        else if (matrix[*police_x + 1][*police_y] <= 0)
             (*police_x)++;
         else;
-    }
-    else if (*police_x > dst_x && *police_y < dst_y){ //3
-        if(matrix[*police_x - 1][*police_y + 1] == 0){
+    } else if (*police_x > dst_x && *police_y < dst_y) { //3
+        if (matrix[*police_x - 1][*police_y + 1] <= 0) {
             (*police_x)--;
             (*police_y)++;
-        }
-        else if(matrix[*police_x][*police_y + 1] == 0)
+        } else if (matrix[*police_x][*police_y + 1] <= 0)
             (*police_y)++;
-        else if(matrix[*police_x - 1][*police_y] == 0)
+        else if (matrix[*police_x - 1][*police_y] <= 0)
             (*police_x)--;
         else;
-    }
-    else if (*police_x == dst_x && *police_y < dst_y)
-        (*police_y)++;
-    else if (*police_x == dst_x && *police_y > dst_y)
-        (*police_y)--;
-    else if (*police_y == dst_y && *police_x > dst_x)
-        (*police_x)--;
-    else if (*police_y == dst_y && *police_x < dst_x)
-        (*police_x)++;
-    else;
+    } else if (*police_x == dst_x && *police_y < dst_y) {
+        if (matrix[*police_x][*police_y + 1] <= 0)
+            (*police_y)++;
+    } else if (*police_x == dst_x && *police_y > dst_y) {
+        if (matrix[*police_x][*police_y - 1] <= 0)
+            (*police_y)--;
+    } else if (*police_y == dst_y && *police_x > dst_x) {
+        if (matrix[*police_x - 1][*police_y] <= 0)
+            (*police_x)--;
+    } else if (*police_y == dst_y && *police_x < dst_x) {
+        if (matrix[*police_x + 1][*police_y] <= 0)
+            (*police_x)++;
+    } else;
     matrix[*police_x][*police_y] = tmp;
 
-     }
+}
 
-void find_robber(int *x, int *y){
+void find_robber(int *x, int *y) {
     for (int i = 0; i < matrix_x; ++i) {
         for (int j = 0; j < matrix_y; ++j) {
             if (matrix[i][j] == -1) {
