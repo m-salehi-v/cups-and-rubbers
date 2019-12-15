@@ -2,9 +2,10 @@
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
+#include <math.h>
 
 
-int matrix_x, matrix_y, police_station, policemen[10];
+int matrix_x , matrix_y , police_station, policemen[10];
 int matrix[50][50];
 
 void rand_movement(int *x, int *y);
@@ -15,9 +16,12 @@ void display_matrix();
 
 void find_robber(int *x, int *y);
 
+void spotting_robber(int robber_x, int robber_y, int informed_stations[]);
+
 int main() {
 
-    int robber_x, robber_y;
+    int robber_x, robber_y, informed_stations[15] = {0};
+
     printf("enter the number of rows and columns:\n");
     scanf("%d %d", &matrix_x, &matrix_y);
     printf("enter the number of police stations and policemen for each one:\n");
@@ -59,8 +63,7 @@ int main() {
     printf("\n\n");
 
 
-
-    //just checking targeted_movement
+    /*just checking targeted_movement
     int k = 1;
     while (k < 200) {
         for (int i = 0; i < matrix_x; ++i) {
@@ -77,7 +80,7 @@ int main() {
 
     k++;
     }
-
+*/
 
 
     return 0;
@@ -181,4 +184,18 @@ void find_robber(int *x, int *y) {
             }
         }
     }
+}
+
+void spotting_robber(int robber_x, int robber_y, int informed_stations[]){
+    int k = 0;
+    for (int i = fmax(robber_x - 2, 0); i <= fmin(robber_x + 2, matrix_x - 1); ++i) {
+        for (int j = fmax(robber_y - 2, 0); j <= fmin(robber_y + 2, matrix_y - 1); ++j) {
+            if (matrix[i][j] > 0) {
+                informed_stations[k] = matrix[i][j];
+                k++;
+            }
+        }
+    }
+
+
 }
