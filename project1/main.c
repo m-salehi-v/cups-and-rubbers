@@ -6,9 +6,11 @@
 
 
 int matrix_x, matrix_y, police_station, policemen[10];
-int matrix[50][50], flag[50][50];
+int matrix[50][50], flag[50][50], police_move_cnt = 0, robber_move_cnt = 0;
 
 int rand_movement(int x, int y);
+
+int rand_movement_robber(int x, int y);
 
 int targeted_movement(int police_x, int police_y, int dst_x, int dst_y);
 
@@ -29,6 +31,7 @@ int main() {
     printf("enter the number of police stations and policemen for each one:\n");
     scanf("%d", &police_station);
     for (int i = 1; i <= police_station; i++) {
+        printf("station %d: \n", i);
         scanf("%d", &policemen[i]);
     }
 
@@ -61,9 +64,10 @@ int main() {
         }
 
     }
+    system("cls");
     display_matrix();
-
-    printf("\n\n");
+    sleep(1);
+    system("cls");
     while (1) {
         for (int i = 0; i < matrix_x; i++)
             for (int j = 0; j < matrix_y; ++j)
@@ -89,13 +93,15 @@ int main() {
             }
         }
         if (robber_existence()) {
-            rand_movement(robber_x, robber_y);
+            rand_movement_robber(robber_x, robber_y);
         }
         display_matrix();
 
-        getchar();
+        sleep(1);
         if (!robber_existence()) {
-            printf("temoooooooooooom");
+            printf("robber is under arrest!\n");
+            printf("total policemen moves: %d\n", police_move_cnt);
+            printf("robber moves: %d\n", robber_move_cnt);
             return 0;
         }
         system("cls");
@@ -117,6 +123,30 @@ int rand_movement(int x, int y) {
         if ((x >= 0) && (x < matrix_x) && (y >= 0) && (y < matrix_y) && (matrix[x][y] == 0)) {
             matrix[x][y] = tmp;
             flag[x][y] = 1;
+            if (k != 0 || l != 0)
+                police_move_cnt++;
+            break;
+        }
+        x -= k;
+        y -= l;
+    }
+
+
+}
+
+int rand_movement_robber(int x, int y) {
+    int tmp = matrix[x][y], k, l;
+    matrix[x][y] = 0;
+    while (1) {
+        k = (rand() % 3) - 1;
+        l = (rand() % 3) - 1;
+        x += k;
+        y += l;
+        if ((x >= 0) && (x < matrix_x) && (y >= 0) && (y < matrix_y) && (matrix[x][y] == 0)) {
+            matrix[x][y] = tmp;
+            flag[x][y] = 1;
+            if (k != 0 || l != 0)
+                robber_move_cnt++;
             break;
         }
         x -= k;
@@ -143,6 +173,8 @@ void display_matrix() {
 int targeted_movement(int police_x, int police_y, int dst_x, int dst_y) {
     int tmp = matrix[police_x][police_y];
     matrix[police_x][police_y] = 0;
+
+    police_move_cnt++;
     if (police_x > dst_x && police_y > dst_y) { //4
         if (matrix[police_x - 1][police_y - 1] <= 0) {
             (police_x)--;
@@ -151,7 +183,8 @@ int targeted_movement(int police_x, int police_y, int dst_x, int dst_y) {
             (police_y)--;
         else if (matrix[police_x - 1][police_y] <= 0)
             (police_x)--;
-        else;
+        else
+            police_move_cnt--;
     } else if (police_x < dst_x && police_y > dst_y) { //1
         if (matrix[police_x + 1][police_y - 1] <= 0) {
             (police_x)++;
@@ -160,7 +193,8 @@ int targeted_movement(int police_x, int police_y, int dst_x, int dst_y) {
             (police_x)++;
         else if (matrix[police_x][police_y - 1] <= 0)
             (police_y)--;
-        else;
+        else
+            police_move_cnt--;
     } else if (police_x < dst_x && police_y < dst_y) { //2
         if (matrix[police_x + 1][police_y + 1] <= 0) {
             (police_x)++;
@@ -169,7 +203,8 @@ int targeted_movement(int police_x, int police_y, int dst_x, int dst_y) {
             (police_y)++;
         else if (matrix[police_x + 1][police_y] <= 0)
             (police_x)++;
-        else;
+        else
+            police_move_cnt--;
     } else if (police_x > dst_x && police_y < dst_y) { //3
         if (matrix[police_x - 1][police_y + 1] <= 0) {
             (police_x)--;
@@ -178,7 +213,8 @@ int targeted_movement(int police_x, int police_y, int dst_x, int dst_y) {
             (police_y)++;
         else if (matrix[police_x - 1][police_y] <= 0)
             (police_x)--;
-        else;
+        else
+            police_move_cnt--;
     } else if (police_x == dst_x && police_y < dst_y) {
         if (matrix[police_x][police_y + 1] <= 0)
             (police_y)++;
@@ -191,7 +227,8 @@ int targeted_movement(int police_x, int police_y, int dst_x, int dst_y) {
     } else if (police_y == dst_y && police_x < dst_x) {
         if (matrix[police_x + 1][police_y] <= 0)
             (police_x)++;
-    } else;
+    } else
+        police_move_cnt--;
 
     matrix[police_x][police_y] = tmp;
     flag[police_x][police_y] = 1;
